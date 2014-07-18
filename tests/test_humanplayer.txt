@@ -17,6 +17,7 @@ Checking money actions
 >>> player.check_money()
 100
 >>> player.place_bet(20)
+20
 >>> player.check_money()
 80
 

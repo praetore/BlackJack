@@ -100,8 +100,10 @@ def game(player):
                     print(e)
             elif player_action == 5:
                 dealer.check_hand()
+                input("Press a key to continue")
             elif player_action == 6:
                 player.check_hand()
+                input("Press a key to continue")
             else:
                 print("That is not a valid option")
 

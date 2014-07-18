@@ -17,7 +17,6 @@ class HumanPlayer(Player):
         print("You have the following cards in your hand:")
         super().check_hand()
         print("You thereby have a total of %d" % self.get_hand_value())
-        input("Press a key to continue")
 
     def place_bet(self, bet=0):
         if bet == 0:

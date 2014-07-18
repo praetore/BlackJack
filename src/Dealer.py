@@ -21,7 +21,6 @@ class Dealer(Player):
         print("Dealer has:")
         super().check_hand()
         print("Dealer thus has a total of %d" % self.get_hand_value())
-        input("Press a key to continue")
 
 if __name__ == '__main__':
     import doctest
