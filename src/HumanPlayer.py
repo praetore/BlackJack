@@ -19,9 +19,6 @@ class HumanPlayer(Player):
         print("You thereby have a total of %d" % self.get_hand_value())
         input("Press a key to continue")
 
-    def clear_hand(self):
-        self._hand = []
-
     def place_bet(self, bet=0):
         if bet == 0:
             bet = int(input("Place your bet: "))

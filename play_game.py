@@ -89,6 +89,7 @@ def game(player):
                 dealer.reveal_hidden()
                 stay = True
             elif player_action == 3:
+                # TODO: Implement split option
                 print("This option in not yet implemented")
             elif player_action == 4:
                 try:

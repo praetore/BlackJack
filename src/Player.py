@@ -11,6 +11,9 @@ class Player(object):
     def check_hand(self):
         [print(card) for card in self._hand]
 
+    def clear_hand(self):
+        self._hand = []
+
     def get_hand_value(self):
         value = sum(card.get_value() for card in self._hand)
 
