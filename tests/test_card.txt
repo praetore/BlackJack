@@ -1,0 +1,33 @@
+>>> from src.Card import Card
+
+Testing string values
+>>> print(Card("Queen", "Hearts"))
+Queen of Hearts
+>>> Card("Queen", "Hearts")
+Value: (Queen - Rank: 10) - Suit: Hearts
+
+Testing numerical values
+>>> print(Card(10, "Diamonds"))
+10 of Diamonds
+>>> Card(10, "Diamonds")
+Value: (10 - Rank: 8) - Suit: Diamonds
+
+>>> Card("Ace", "Spades") > Card(3, "Clubs")
+True
+>>> Card(2, "Diamonds") < Card("Ace", "Spades")
+True
+>>> Card(5, "Hearts") == Card(5, "Diamonds")
+False
+>>> Card(6, "Diamonds") != Card(10, "Spades")
+True
+
+Testing invalid input
+>>> Card(12, "Hearts")
+Traceback (most recent call last):
+AttributeError: 'Card' object has no attribute '_name'
+>>> Card("Alice", "Hearts")
+Traceback (most recent call last):
+AttributeError: 'Card' object has no attribute '_name'
+>>> Card(3, "Foo")
+Traceback (most recent call last):
+AttributeError: 'Card' object has no attribute '_suit'

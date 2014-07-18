@@ -1,0 +1,33 @@
+>>> from src.Card import Card
+>>> from src.Deck import Deck
+
+>>> deck = Deck()
+>>> deck.size()
+52
+>>> card = deck.take_card()
+>>> deck.size()
+51
+>>> card2 = deck.take_card()
+>>> deck.size()
+50
+>>> deck.add_card(card2)
+>>> deck.size()
+51
+>>> deck.add_card(card)
+>>> deck.size()
+52
+>>> deck.take_card() == card
+True
+>>> deck.add_card(card)
+>>> deck.shuffle_deck()
+>>> deck.take_card() == card and deck.take_card() == card2
+False
+>>> deck.add_card(card)
+Traceback (most recent call last):
+src.Errors.DuplicateCardError: Card already in deck
+>>> deck.size()
+51
+>>> for i in range(deck.size() + 1):
+...     deck.take_card()
+Traceback (most recent call last):
+src.Errors.EmptyDeckError: No cards left in deck
