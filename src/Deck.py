@@ -7,43 +7,34 @@ from src.Stack import Stack
 __author__ = 'darryl'
 
 
-class Deck():
+class Deck(Stack):
     """
     Represents a deck of playing cards
     """
 
     def __init__(self):
-        self._deck = Stack()
-        [self._deck.push(Card(value, suit)) for suit in SUITS for value in VALUES]
-        [self._deck.push(Card(value, suit)) for suit in SUITS for value in FACE_CARDS]
+        super().__init__()
+        [self.push(Card(value, suit)) for suit in SUITS for value in VALUES]
+        [self.push(Card(value, suit)) for suit in SUITS for value in FACE_CARDS]
         self.shuffle_deck()
 
     def add_card(self, card):
-        check = [self._deck.pop() for i in range(self._deck.get_size())]
-        check.reverse()
-        if card not in check:
-            check.append(card)
-            [self._deck.push(i) for i in check]
+        if card not in self._items:
+            self.push(card)
         else:
-            [self._deck.push(i) for i in check]
             raise DuplicateCardError
 
     def take_card(self):
-        if self._deck.get_size() > 0:
-            return self._deck.pop()
+        if not self.is_empty():
+            return self.pop()
         else:
             raise EmptyDeckError
 
     def shuffle_deck(self):
-        deck = [self._deck.pop() for i in range(self._deck.get_size())]
-        deck = random.sample(deck, len(deck))
-        [self._deck.push(i) for i in deck]
-
-    def size(self):
-        return self._deck.get_size()
+        self._items = random.sample(self._items, len(self._items))
 
     def __repr__(self):
-        current = [str(card) for card in self._deck]
+        current = [str(card) for card in self._items]
         return "Current cards in deck: %s" % ", ".join(current)
 
 if __name__ == '__main__':

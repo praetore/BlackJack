@@ -11,7 +11,7 @@ class Stack:
     def push(self, item):
         self._items.append(item)
 
-    def get_size(self):
+    def size(self):
         return len(self._items)
 
     def pop(self):
@@ -30,12 +30,12 @@ def main():
     s.push('dog')
     print(s.peek())
     s.push(True)
-    print(s.get_size())
+    print(s.size())
     print(s.is_empty())
     s.push(8.4)
     print(s.pop())
     print(s.pop())
-    print(s.get_size())
+    print(s.size())
 
 
 if __name__ == '__main__':
