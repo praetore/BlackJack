@@ -1,0 +1,13 @@
+>>> from src.Dealer import Dealer
+>>> from src.Card import Card
+
+Checking instantiation
+>>> dealer = Dealer()
+
+Checking card actions
+>>> dealer.receive_card(Card(2, "Clubs"))
+Dealer received a 2 of Clubs
+>>> dealer.check_hand()
+Dealer has:
+2 of Clubs
+Dealer thus has a total of 2

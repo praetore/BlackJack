@@ -16,11 +16,19 @@ class HumanPlayer(Player):
     def check_hand(self):
         print("You have the following cards in your hand:")
         super().check_hand()
+        print("You thereby have a total of %d" % self.get_hand_value())
+        input("Press a key to continue")
 
-    def place_bet(self, bet):
+    def clear_hand(self):
+        self._hand = []
+
+    def place_bet(self, bet=0):
+        if bet == 0:
+            bet = int(input("Place your bet: "))
         if bet > 0:
-            if self._money > bet:
+            if self._money >= bet:
                 self._money -= bet
+                return bet
             else:
                 raise NotEnoughMoneyError
         else:

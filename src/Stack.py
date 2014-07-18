@@ -21,22 +21,3 @@ class Stack:
 
     def peek(self):
         return self._items[-1]
-
-
-def main():
-    s = Stack()
-    print(s.is_empty())
-    s.push(4)
-    s.push('dog')
-    print(s.peek())
-    s.push(True)
-    print(s.size())
-    print(s.is_empty())
-    s.push(8.4)
-    print(s.pop())
-    print(s.pop())
-    print(s.size())
-
-
-if __name__ == '__main__':
-    main()

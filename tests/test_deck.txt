@@ -24,10 +24,10 @@ True
 False
 >>> deck.add_card(card)
 Traceback (most recent call last):
-src.Errors.DuplicateCardError: Card already in deck
+src.Errors.DuplicateCardError: Card already in deck!
 >>> deck.size()
 51
 >>> for i in range(deck.size() + 1):
 ...     deck.take_card()
 Traceback (most recent call last):
-src.Errors.EmptyDeckError: No cards left in deck
+src.Errors.EmptyDeckError: No cards left in deck!
