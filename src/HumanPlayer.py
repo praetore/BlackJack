@@ -1,0 +1,40 @@
+from src.Errors import NotEnoughMoneyError, NegativeMoneyError
+from src.Player import Player
+
+__author__ = 'Darryl'
+
+
+class HumanPlayer(Player):
+    def __init__(self):
+        super().__init__()
+        self._money = 0
+
+    def receive_card(self, card):
+        print("You received a %s" % card)
+        super().receive_card(card)
+
+    def check_hand(self):
+        print("You have the following cards in your hand:")
+        super().check_hand()
+
+    def place_bet(self, bet):
+        if bet > 0:
+            if self._money > bet:
+                self._money -= bet
+            else:
+                raise NotEnoughMoneyError
+        else:
+            raise NegativeMoneyError
+
+    def receive_money(self, amount):
+        if amount > 0:
+            self._money += amount
+        else:
+            raise NegativeMoneyError
+
+    def check_money(self):
+        return self._money
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testfile("../tests/test_humanplayer.txt")

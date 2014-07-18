@@ -1,0 +1,31 @@
+>>> from src.HumanPlayer import HumanPlayer
+>>> from src.Card import Card
+
+Checking instantiation
+>>> player = HumanPlayer()
+
+Checking card actions
+>>> player.receive_card(Card(2, "Clubs"))
+You received a 2 of Clubs
+>>> player.check_hand()
+You have the following cards in your hand:
+2 of Clubs
+
+Checking money actions
+>>> player.receive_money(100)
+>>> player.check_money()
+100
+>>> player.place_bet(20)
+>>> player.check_money()
+80
+
+Checking invalid money actions
+>>> player.receive_money(-80) # doctest: +ELLIPSIS
+Traceback (most recent call last):
+src.Errors.NegativeMoneyError: A negative monetary value was given
+>>> player.place_bet(-20) # doctest: +ELLIPSIS
+Traceback (most recent call last):
+src.Errors.NegativeMoneyError: A negative monetary value was given
+>>> player.place_bet(100) # doctest: +ELLIPSIS
+Traceback (most recent call last):
+src.Errors.NotEnoughMoneyError: Player does not have enough money

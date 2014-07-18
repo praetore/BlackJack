@@ -9,8 +9,8 @@ Value: (Queen - Rank: 10) - Suit: Hearts
 Testing numerical values
 >>> print(Card(10, "Diamonds"))
 10 of Diamonds
->>> Card(10, "Diamonds")
-Value: (10 - Rank: 8) - Suit: Diamonds
+>>> Card(8, "Diamonds")
+Value: (8 - Rank: 8) - Suit: Diamonds
 
 >>> Card("Ace", "Spades") > Card(3, "Clubs")
 True

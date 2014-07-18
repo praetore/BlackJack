@@ -8,13 +8,16 @@ class Card:
     Represents a basic playing card.
     """
 
-    def __init__(self, value, suit):
-        if value in FACE_CARDS or value in VALUES:
-            self._name = value
-            if value in FACE_CARDS:
-                self._value = FACE_CARDS.index(value) + 9
-            if value in VALUES:
-                self._value = VALUES.index(value)
+    def __init__(self, card_name, suit):
+        if card_name in FACE_CARDS or card_name in VALUES:
+            self._name = card_name
+            if card_name in FACE_CARDS:
+                if card_name != "Ace":
+                    self._value = 10
+                else:
+                    self._value = 11
+            elif card_name in VALUES:
+                self._value = card_name
         if suit in SUITS:
             self._suit = suit
 
@@ -37,10 +40,10 @@ class Card:
         return self._value <= y.get_value()
 
     def __eq__(self, y):
-        return self._value == y.get_value() and self._suit == y.get_suit()
+        return self._name == y.get_name() and self._suit == y.get_suit()
 
     def __ne__(self, y):
-        return self._value != y.get_value() or self._suit != y.get_suit()
+        return self._name != y.get_name() or self._suit != y.get_suit()
 
     def get_name(self):
         return self._name
