@@ -1,0 +1,21 @@
+>>> from src.HumanPlayer import HumanPlayer
+>>> from src.Game import Game
+>>> from src.Dealer import Dealer
+>>> from src.Card import Card
+
+Instantiating objects
+>>> game = Game(HumanPlayer("Darryl"))
+>>> player = game.get_player()
+
+Betting actions
+>>> game.take_bet(player.place_bet(50))
+>>> game.placed_bet()
+50
+>>> game.increase_bet(player.place_bet(20))
+>>> game.placed_bet()
+70
+>>> player.receive_card(Card("Ace", "Diamonds"))
+Darryl receives a Ace of Diamonds
+>>> game.reset()
+>>> player.get_hand_size()
+0

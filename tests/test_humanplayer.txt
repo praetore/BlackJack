@@ -2,19 +2,19 @@
 >>> from src.Card import Card
 
 Checking instantiation
->>> player = HumanPlayer()
+>>> player = HumanPlayer("Darryl")
 
 Checking card actions
 >>> player.receive_card(Card("Ace", "Spades"))
-You received a Ace of Spades
+Darryl receives a Ace of Spades
 >>> player.check_hand()
-You have the following cards in your hand:
+Darryl has the following cards in hand:
 Ace of Spades
-You thereby have a total of 11
+Darryl thereby has a total of 11
 >>> player.receive_card(Card("King", "Diamonds"))
-You received a King of Diamonds
+Darryl receives a King of Diamonds
 >>> player.receive_card(Card("Queen", "Hearts"))
-You received a Queen of Hearts
+Darryl receives a Queen of Hearts
 >>> player.get_hand_value()
 21
 

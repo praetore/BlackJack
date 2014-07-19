@@ -9,7 +9,7 @@ class Dealer(Player):
         self._hidden = None
 
     def receive_card(self, card):
-        print("Dealer received a %s" % card)
+        print("Dealer receives a %s" % card)
         super().receive_card(card)
 
     def receive_hidden(self, card):

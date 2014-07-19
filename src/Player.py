@@ -14,6 +14,9 @@ class Player(object):
     def clear_hand(self):
         self._hand = []
 
+    def get_hand_size(self):
+        return len(self._hand)
+
     def get_hand_value(self):
         value = sum(card.get_value() for card in self._hand)
 

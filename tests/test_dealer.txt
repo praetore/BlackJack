@@ -6,7 +6,7 @@ Checking instantiation
 
 Checking card actions
 >>> dealer.receive_card(Card(2, "Clubs"))
-Dealer received a 2 of Clubs
+Dealer receives a 2 of Clubs
 >>> dealer.check_hand()
 Dealer has:
 2 of Clubs
@@ -32,12 +32,12 @@ Dealer has revealed all cards
 >>> dealer.check_hand()
 Dealer has no cards in hand
 >>> dealer.receive_card(Card(6, "Spades"))
-Dealer received a 6 of Spades
+Dealer receives a 6 of Spades
 >>> dealer.receive_card(Card("Ace", "Spades"))
-Dealer received a Ace of Spades
+Dealer receives a Ace of Spades
 >>> dealer.receive_card(Card("King", "Clubs"))
-Dealer received a King of Clubs
+Dealer receives a King of Clubs
 >>> dealer.receive_card(Card("Ace", "Clubs"))
-Dealer received a Ace of Clubs
+Dealer receives a Ace of Clubs
 >>> dealer.get_hand_value()
 18

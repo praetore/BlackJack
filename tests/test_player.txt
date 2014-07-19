@@ -12,6 +12,8 @@ Ace of Spades
 >>> player.receive_card(Card("Queen", "Hearts"))
 >>> player.get_hand_value()
 21
+>>> player.get_hand_size()
+3
 
 Checking invalid receive cards actions
 >>> player.receive_card(Card("Foo", "Bar"))

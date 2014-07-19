@@ -1,137 +1,141 @@
-from src.Dealer import Dealer
-from src.Deck import Deck
 from src.Errors import NegativeMoneyError, NotEnoughMoneyError
+from src.Game import Game
 from src.HumanPlayer import HumanPlayer
 
 __author__ = 'Darryl'
 
 
-def game(player):
-    # Instantiating objects
-    dealer = Dealer()
-    deck = Deck()
-
-    player_lost = False
-    player_wins = False
-    print("You have $%d" % player.check_money())
-    # placing bets
-    bet = 0
-    while bet == 0:
+def make_decision(game):
+    dealer = game.get_dealer()
+    player = game.get_player()
+    deck = game.get_deck()
+    print("Dealer has a total of %d" % dealer.get_hand_value())
+    print("%s has a total of %d" % (player.get_name(), player.get_hand_value()))
+    print("What would this player like to do?")
+    print("[1] Hit")
+    print("[2] Stay")
+    print("[3] Split")
+    print("[4] Double")
+    print("[5] Check dealer's cards")
+    print("[6] Check your cards")
+    player_action = int(input("Pick an option: "))
+    if player_action == 1:
+        player.receive_card(deck.take_card())
+        if player.get_hand_value() > 21:
+            print("%s busts" % (player.get_name()))
+            game.set_result("loss")
+            print("Dealer reveils a %s" % dealer.get_hidden())
+            dealer.reveal_hidden()
+            print("Dealer has a total of %d" % dealer.get_hand_value())
+    elif player_action == 2:
+        win_or_lose(game)
+    elif player_action == 3:
+        # TODO: Implement split option
+        print("This option in not yet implemented")
+    elif player_action == 4:
         try:
-            bet = player.place_bet()
+            game.increase_bet(player.place_bet(game.placed_bet()))
+            player.receive_card(deck.take_card())
+            win_or_lose(game)
+        except NotEnoughMoneyError as e:
+            print(e)
+    elif player_action == 5:
+        dealer.check_hand()
+        input("Press a key to continue")
+    elif player_action == 6:
+        player.check_hand()
+        input("Press a key to continue")
+    else:
+        print("That is not a valid option")
+
+
+def check_for_blackjack(game):
+    dealer = game.get_dealer()
+    player = game.get_player()
+    if player.get_hand_value() == 21:
+        print("%s has Blackjack!" % (player.get_name()))
+        win_or_lose(game)
+    if (dealer.get_hand_value() + dealer.get_hidden().get_value()) == 21:
+        print("Dealer has Blackjack!")
+        dealer.reveal_hidden()
+        win_or_lose(game)
+
+
+def take_bet(game):
+    while game.placed_bet() == 0:
+        try:
+            game.take_bet(game.get_player().place_bet())
         except (NegativeMoneyError, NotEnoughMoneyError) as e:
             print(e)
         except ValueError:
             print("Please place a valid bet!")
 
-    # dealing cards
+
+def win_or_lose(game):
+    dealer = game.get_dealer()
+    player = game.get_player()
+    print("Dealer reveals a %s" % dealer.get_hidden())
+    dealer.reveal_hidden()
+    while dealer.get_hand_value() < 17:
+        dealer.receive_card(game.get_deck().take_card())
+    print("Dealer has a total of %d" % dealer.get_hand_value())
+    if dealer.get_hand_value() <= 21:
+        if player.get_hand_value() > dealer.get_hand_value():
+            print("%s beats the dealer!" % (player.get_name()))
+            game.set_result("win")
+        elif player.get_hand_value() == dealer.get_hand_value():
+            print("%s ties!" % (player.get_name()))
+            game.set_result("tie")
+        elif player.get_hand_value() < dealer.get_hand_value():
+            print("%s lost!" % (player.get_name()))
+            game.set_result("loss")
+    elif dealer.get_hand_value() > 21:
+        print("Dealer busts")
+        game.set_result("win")
+
+
+def receive_payout(game):
+    result = game.get_result()
+    payout = game.placed_bet()
+    player = game.get_player()
+    if result == "tie":
+        print("Game tied! %s gets $%d bet back." % (player.get_name(), payout))
+        player.receive_money(payout)
+    elif result == "win":
+        if player.get_hand_size() == 2 and player.get_hand_value() == 21:
+            payout *= 1.25
+        print("%s wins $%d" % (player.get_name(), payout*2))
+        player.receive_money(payout*2)
+    else:
+        print("%s loses $%d!" % (player.get_name(), payout))
+
+
+def deal_cards(game):
+    dealer = game.get_dealer()
+    deck = game.get_deck()
+    player = game.get_player()
     print("Cards are being dealt NOW!")
     dealer.receive_card(deck.take_card())
     dealer.receive_hidden(deck.take_card())
     for i in range(2):
         player.receive_card(deck.take_card())
 
-    stay = False
-    player_has_blackjack = False
-
-    # checking for blackjack
-    if player.get_hand_value() == 21:
-        print("You have Blackjack!")
-        player_has_blackjack = True
-        stay = True
-
-    if (dealer.get_hand_value() + dealer.get_hidden().get_value()) == 21:
-        print("Dealer has Blackjack!")
-        dealer.reveal_hidden()
-        stay = True
-
-    # In case win/lose conditions are not met
-    while not player_wins and not player_lost:
-        # checking for win or lose conditions
-        if stay and player.get_hand_value() <= 21:
-            while dealer.get_hand_value() < 17:
-                dealer.receive_card(deck.take_card())
-            print("Dealer has a total of %d" % dealer.get_hand_value())
-            if dealer.get_hand_value() <= 21:
-                if player.get_hand_value() > dealer.get_hand_value():
-                    player_wins = True
-                elif player.get_hand_value() == dealer.get_hand_value():
-                    player_lost = True
-                    player_wins = True
-                elif player.get_hand_value() < dealer.get_hand_value():
-                    player_lost = True
-            elif dealer.get_hand_value() > 21:
-                print("Dealer busts")
-                player_wins = True
-        elif player.get_hand_value() > 21:
-            print("You bust")
-            player_lost = True
-            print("Dealer reveils a %s" % dealer.get_hidden())
-            dealer.reveal_hidden()
-            print("Dealer has a total of %d" % dealer.get_hand_value())
-
-        # Presenting decisions for player to take
-        if not player_lost and not player_wins and not stay:
-            print("Dealer has a total of %d" % dealer.get_hand_value())
-            print("You have a total of %d" % player.get_hand_value())
-            print("What would you like to do?")
-            print("[1] Hit")
-            print("[2] Stay")
-            print("[3] Split")
-            print("[4] Double")
-            print("[5] Check dealer's cards")
-            print("[6] Check your cards")
-            player_action = int(input("Pick an option: "))
-            if player_action == 1:
-                player.receive_card(deck.take_card())
-            elif player_action == 2:
-                print("Dealer reveils a %s" % dealer.get_hidden())
-                dealer.reveal_hidden()
-                stay = True
-            elif player_action == 3:
-                # TODO: Implement split option
-                print("This option in not yet implemented")
-            elif player_action == 4:
-                try:
-                    bet += player.place_bet(bet)
-                    player.receive_card(deck.take_card())
-                    stay = True
-                except NotEnoughMoneyError as e:
-                    print(e)
-            elif player_action == 5:
-                dealer.check_hand()
-                input("Press a key to continue")
-            elif player_action == 6:
-                player.check_hand()
-                input("Press a key to continue")
-            else:
-                print("That is not a valid option")
-
-    if player_wins and player_lost:
-        print("Game tied! Getting $%d bet back." % bet)
-        player.receive_money(bet)
-    elif player_wins:
-        if player_has_blackjack:
-            bet *= 1.25
-        print("You win $%d" % (bet*2))
-        player.receive_money(bet*2)
-    else:
-        print("You lose $%d!" % bet)
-
-    print("You now have $%d" % player.check_money())
-    player.clear_hand()
-
 
 if __name__ == '__main__':
-    player = HumanPlayer()
-    player.receive_money(100)
-    game(player)
+    player = HumanPlayer(__author__)
+    game = Game(player)
     another = "y"
     while another == "y" and player.check_money() > 0:
+        game.reset()
+        take_bet(game)
+        deal_cards(game)
+        check_for_blackjack(game)
+        while not game.get_result():
+            make_decision(game)
+        receive_payout(game)
+        print("%s now has $%d" % (player.get_name(), player.check_money()))
         another = input("Would you like to play another game? (y/n) ")
-        if another == "y":
-            game(player)
 
     if player.check_money() == 0:
-        print("You ran out of money!")
+        print("%s ran out of money!" % (player.get_name()))
     print("Come back again soon!")
