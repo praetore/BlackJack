@@ -24,14 +24,14 @@ def make_decision(game):
         if player.get_hand_value() > 21:
             print("%s busts" % (player.get_name()))
             game.set_result("loss")
-            print("Dealer reveils a %s" % dealer.get_hidden())
+            print("Dealer reveals a %s" % dealer.get_hidden())
             dealer.reveal_hidden()
             print("Dealer has a total of %d" % dealer.get_hand_value())
     elif player_action == 2:
         win_or_lose(game)
     elif player_action == 3:
         # TODO: Implement split option
-        print("This option in not yet implemented")
+        print("This feature is not yet implemented")
     elif player_action == 4:
         try:
             game.increase_bet(player.place_bet(game.placed_bet()))
