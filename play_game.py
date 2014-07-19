@@ -5,6 +5,40 @@ from src.HumanPlayer import HumanPlayer
 __author__ = 'Darryl'
 
 
+def hit(game):
+    deck = game.get_deck()
+    dealer = game.get_dealer()
+    player = game.get_player()
+    player.receive_card(deck.take_card())
+    if player.get_hand_value() > 21:
+        print("%s busts" % (player.get_name()))
+        game.set_result("loss")
+        print("Dealer reveals a %s" % dealer.get_hidden())
+        dealer.reveal_hidden()
+        print("Dealer has a total of %d" % dealer.get_hand_value())
+
+
+def double_down(game):
+    deck = game.get_deck()
+    player = game.get_player()
+    try:
+        game.increase_bet(player.place_bet(game.placed_bet()))
+        player.receive_card(deck.take_card())
+        stay(game)
+    except NotEnoughMoneyError as e:
+        print(e)
+
+
+def check_hand(player):
+    player.check_hand()
+    input("Press a key to continue")
+
+
+def split(game):
+    # TODO: Implement split option
+    print("This feature is not yet implemented")
+
+
 def make_decision(game):
     dealer = game.get_dealer()
     player = game.get_player()
@@ -15,36 +49,22 @@ def make_decision(game):
     print("[1] Hit")
     print("[2] Stay")
     print("[3] Split")
-    print("[4] Double")
+    print("[4] Double down")
     print("[5] Check dealer's cards")
-    print("[6] Check your cards")
+    print("[6] Check cards")
     player_action = int(input("Pick an option: "))
     if player_action == 1:
-        player.receive_card(deck.take_card())
-        if player.get_hand_value() > 21:
-            print("%s busts" % (player.get_name()))
-            game.set_result("loss")
-            print("Dealer reveals a %s" % dealer.get_hidden())
-            dealer.reveal_hidden()
-            print("Dealer has a total of %d" % dealer.get_hand_value())
+        hit(deck)
     elif player_action == 2:
-        win_or_lose(game)
+        stay(game)
     elif player_action == 3:
-        # TODO: Implement split option
-        print("This feature is not yet implemented")
+        split(game)
     elif player_action == 4:
-        try:
-            game.increase_bet(player.place_bet(game.placed_bet()))
-            player.receive_card(deck.take_card())
-            win_or_lose(game)
-        except NotEnoughMoneyError as e:
-            print(e)
+        double_down(game)
     elif player_action == 5:
-        dealer.check_hand()
-        input("Press a key to continue")
+        check_hand(dealer)
     elif player_action == 6:
-        player.check_hand()
-        input("Press a key to continue")
+        check_hand(player)
     else:
         print("That is not a valid option")
 
@@ -54,24 +74,24 @@ def check_for_blackjack(game):
     player = game.get_player()
     if player.get_hand_value() == 21:
         print("%s has Blackjack!" % (player.get_name()))
-        win_or_lose(game)
+        stay(game)
     if (dealer.get_hand_value() + dealer.get_hidden().get_value()) == 21:
         print("Dealer has Blackjack!")
         dealer.reveal_hidden()
-        win_or_lose(game)
+        stay(game)
 
 
 def take_bet(game):
     while game.placed_bet() == 0:
         try:
-            game.take_bet(game.get_player().place_bet())
+            game.take_bet(game.get_player().increase_bet())
         except (NegativeMoneyError, NotEnoughMoneyError) as e:
             print(e)
         except ValueError:
             print("Please place a valid bet!")
 
 
-def win_or_lose(game):
+def stay(game):
     dealer = game.get_dealer()
     player = game.get_player()
     print("Dealer reveals a %s" % dealer.get_hidden())
@@ -121,11 +141,9 @@ def deal_cards(game):
         player.receive_card(deck.take_card())
 
 
-if __name__ == '__main__':
-    name = input("What's your name?")
-    player = HumanPlayer(name)
-    game = Game(player)
+def run_game(game):
     another = "y"
+    player = game.get_player()
     while another == "y" and player.check_money() > 0:
         game.reset()
         take_bet(game)
@@ -136,7 +154,13 @@ if __name__ == '__main__':
         receive_payout(game)
         print("%s now has $%d" % (player.get_name(), player.check_money()))
         another = input("Would you like to play another game? (y/n) ")
-
     if player.check_money() == 0:
         print("%s ran out of money!" % (player.get_name()))
     print("Come back again soon!")
+
+
+if __name__ == '__main__':
+    name = input("What's your name?")
+    player = HumanPlayer(name)
+    game = Game(player)
+    run_game(game)

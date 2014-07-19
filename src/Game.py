@@ -16,17 +16,17 @@ class Game:
     def placed_bet(self):
         return self._bet
 
-    def take_bet(self, bet):
-        self._bet = bet
-
     def increase_bet(self, bet):
-        self._bet += bet
+        if isinstance(bet, int):
+            if bet > 0:
+                self._bet += bet
 
     def reset(self):
         self._player.clear_hand()
         self._dealer.clear_hand()
         self._deck = Deck()
         self._result = ""
+        self._bet = 0
 
     def get_player(self):
         return self._player
@@ -41,7 +41,8 @@ class Game:
         return self._result
 
     def set_result(self, result):
-        self._result = result
+        if result in ["win", "tie", "loss"]:
+            self._result = result
 
 
 if __name__ == '__main__':
