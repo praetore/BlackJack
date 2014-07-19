@@ -1,6 +1,11 @@
 __author__ = 'darryl'
 
 
+class InvalidCardError(Exception):
+    def __init__(self):
+        Exception.__init__(self, "Not a valid card")
+
+
 class DuplicateCardError(Exception):
     def __init__(self):
         Exception.__init__(self, "Card already in deck!")

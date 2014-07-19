@@ -14,9 +14,12 @@ class HumanPlayer(Player):
         super().receive_card(card)
 
     def check_hand(self):
-        print("You have the following cards in your hand:")
-        super().check_hand()
-        print("You thereby have a total of %d" % self.get_hand_value())
+        if len(self._hand):
+            print("You have the following cards in your hand:")
+            super().check_hand()
+            print("You thereby have a total of %d" % self.get_hand_value())
+        else:
+            print("Player has no cards in hand")
 
     def place_bet(self, bet=0):
         if bet == 0:

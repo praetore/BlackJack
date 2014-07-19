@@ -24,10 +24,10 @@ True
 Testing invalid input
 >>> Card(12, "Hearts")
 Traceback (most recent call last):
-AttributeError: 'Card' object has no attribute '_name'
+src.Errors.InvalidCardError: Not a valid card
 >>> Card("Alice", "Hearts")
 Traceback (most recent call last):
-AttributeError: 'Card' object has no attribute '_name'
+src.Errors.InvalidCardError: Not a valid card
 >>> Card(3, "Foo")
 Traceback (most recent call last):
-AttributeError: 'Card' object has no attribute '_suit'
+src.Errors.InvalidCardError: Not a valid card

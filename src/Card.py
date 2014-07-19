@@ -1,4 +1,5 @@
 from src.Constants import FACE_CARDS, VALUES, SUITS
+from src.Errors import InvalidCardError
 
 __author__ = 'darryl'
 
@@ -18,8 +19,13 @@ class Card:
                     self._value = 11
             elif card_name in VALUES:
                 self._value = card_name
+        else:
+            raise InvalidCardError
+
         if suit in SUITS:
             self._suit = suit
+        else:
+            raise InvalidCardError
 
     def __repr__(self):
         return "Value: (%s - Rank: %d) - Suit: %s" % (self._name, self._value, self._suit)

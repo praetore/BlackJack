@@ -4,7 +4,7 @@
 Check for instantiation
 >>> player = Player()
 
-Receiving cards
+Checking receive card actions
 >>> player.receive_card(Card("Ace", "Spades"))
 >>> player.check_hand()
 Ace of Spades
@@ -12,3 +12,8 @@ Ace of Spades
 >>> player.receive_card(Card("Queen", "Hearts"))
 >>> player.get_hand_value()
 21
+
+Checking invalid receive cards actions
+>>> player.receive_card(Card("Foo", "Bar"))
+Traceback (most recent call last):
+src.Errors.InvalidCardError: Not a valid card

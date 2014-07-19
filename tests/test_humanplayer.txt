@@ -5,12 +5,18 @@ Checking instantiation
 >>> player = HumanPlayer()
 
 Checking card actions
->>> player.receive_card(Card(2, "Clubs"))
-You received a 2 of Clubs
+>>> player.receive_card(Card("Ace", "Spades"))
+You received a Ace of Spades
 >>> player.check_hand()
 You have the following cards in your hand:
-2 of Clubs
-You thereby have a total of 2
+Ace of Spades
+You thereby have a total of 11
+>>> player.receive_card(Card("King", "Diamonds"))
+You received a King of Diamonds
+>>> player.receive_card(Card("Queen", "Hearts"))
+You received a Queen of Hearts
+>>> player.get_hand_value()
+21
 
 Checking money actions
 >>> player.receive_money(100)

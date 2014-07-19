@@ -11,3 +11,33 @@ Dealer received a 2 of Clubs
 Dealer has:
 2 of Clubs
 Dealer thus has a total of 2
+>>> dealer.receive_hidden(Card(3, "Spades"))
+>>> dealer.get_hidden()
+Value: (3 - Rank: 3) - Suit: Spades
+>>> dealer.check_hand()
+Dealer has:
+2 of Clubs
+Dealer thus has a total of 2
+>>> dealer.reveal_hidden()
+>>> dealer.check_hand()
+Dealer has:
+2 of Clubs
+3 of Spades
+Dealer thus has a total of 5
+>>> dealer.get_hidden()
+Dealer has revealed all cards
+
+# Test soft hands
+>>> dealer.clear_hand()
+>>> dealer.check_hand()
+Dealer has no cards in hand
+>>> dealer.receive_card(Card(6, "Spades"))
+Dealer received a 6 of Spades
+>>> dealer.receive_card(Card("Ace", "Spades"))
+Dealer received a Ace of Spades
+>>> dealer.receive_card(Card("King", "Clubs"))
+Dealer received a King of Clubs
+>>> dealer.receive_card(Card("Ace", "Clubs"))
+Dealer received a Ace of Clubs
+>>> dealer.get_hand_value()
+18
