@@ -122,7 +122,8 @@ def deal_cards(game):
 
 
 if __name__ == '__main__':
-    player = HumanPlayer(__author__)
+    name = input("What's your name?")
+    player = HumanPlayer(name)
     game = Game(player)
     another = "y"
     while another == "y" and player.check_money() > 0:
