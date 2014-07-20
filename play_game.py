@@ -5,11 +5,9 @@ from src.HumanPlayer import HumanPlayer
 __author__ = 'Darryl'
 
 
-def hit(game):
-    deck = game.get_deck()
+def check_for_bust(game):
     dealer = game.get_dealer()
     player = game.get_player()
-    player.receive_card(deck.take_card())
     if player.get_hand_value() > 21:
         print("%s busts" % (player.get_name()))
         game.set_result("loss")
@@ -18,13 +16,22 @@ def hit(game):
         print("Dealer has a total of %d" % dealer.get_hand_value())
 
 
+def hit(game):
+    deck = game.get_deck()
+    player = game.get_player()
+    player.receive_card(deck.take_card())
+    check_for_bust(game)
+
+
 def double_down(game):
     deck = game.get_deck()
     player = game.get_player()
     try:
         game.increase_bet(player.place_bet(game.placed_bet()))
         player.receive_card(deck.take_card())
-        stay(game)
+        check_for_bust(game)
+        if not game.get_result():
+            stay(game)
     except NotEnoughMoneyError as e:
         print(e)
 
@@ -124,8 +131,8 @@ def receive_payout(game):
     elif result == "win":
         if player.get_hand_size() == 2 and player.get_hand_value() == 21:
             payout *= 1.25
-        print("%s wins $%d" % (player.get_name(), payout*2))
-        player.receive_money(payout*2)
+        print("%s wins $%d" % (player.get_name(), payout * 2))
+        player.receive_money(payout * 2)
     else:
         print("%s loses $%d!" % (player.get_name(), payout))
 
